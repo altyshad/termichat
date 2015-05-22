@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+int main(int argc,char **argv)
+{
+    if (argc<3) {
+	printf("please enter address/name and port\n");
+	exit(-1);
+	}
+	int sd;
+	//создать сокет для клиента
+    sd=socket(PF_INET,SOCK_STREAM,0);
+    if(sd<0)
+    {
+      	perror("socket");
+      	exit(-1);
+    }
+
+struct hostent * hostinfo;
+struct sockaddr_in sock;
++//gethostbyname 
+
+  hostinfo=gethostbyname(argv[1]);
+   sock.sin_family=PF_INET;
+   sock.sin_addr.s_addr=((struct  in_addr*)(hostinfo->h_addr))->s_addr;
+  printf ("address %d\n",((struct  in_addr*)(hostinfo->h_addr))->s_addr);
+    sock.sin_port=htons(atoi(argv[2]));
+//получить приглашение от сервера?---------------------------------------
+//отправить свое имя---------------------------------------------------------------
++//приконнектиться к сокету сервера
+   int connected = connect(sd,(struct sockaddr*)&sock,sizeof(sock));
+    if (connected <0)
+    {
+	perror("connect");
+	exit(-1);
+    }
+// 
++//в бесконечном цикле ожидать структуру от сервера
+while(1){
+}
++        //принять данные с сокета
++        // прочитать сообщение
++        //закрыть цикл при условии отправки какого то сообщения о выходе????? 
++       // отправить структуру серверу
++       //сравнивать структуру с каким то условием завершения сеанса.
+}
